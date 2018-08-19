@@ -14,13 +14,23 @@ if __name__ == '__main__':
     user_trainer = UserTrainer('train')
     #dataflow = Dataflow(user_trainer)
     dataflow = AugmentedDataflow(user_trainer)
-    dataflow = MultiThreadPrefetchData(dataflow, 100, 2)
+    dataflow = MultiThreadPrefetchData(dataflow, config.batch_size, 2)
     dataflow.reset()
 
-    #dataflow = BatchData(dataflow, config.batch_size)
-    #dataflow = BatchPrefetchData(dataflow, 4, 2)
-    #dataflow.reset()
+    dataflow = BatchData(dataflow, config.batch_size)
+    dataflow = BatchPrefetchData(dataflow, 4, 2)
+    dataflow.reset()
     time.sleep(1)
+
+    lcount = 0
+    for i in dataflow.get_data():
+        print(i)
+        #print(str(lcount+1) + ": " + str(i[1].shape))
+        lcount += 1
+        if lcount == 20:
+            dataflow.stop()
+
+    #print(next(dataflow.get_data())[1].shape)
     #print(next(dataflow.get_data())[0].shape)
 
     #data = next(dataflow.get_data())

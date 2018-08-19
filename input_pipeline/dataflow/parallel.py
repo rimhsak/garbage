@@ -134,7 +134,10 @@ class BatchPrefetchData(Dataflow):
             th.start()
 
     def get_data(self):
-        yield self.queue.get()
+        return self.queue.get()
+
+    def stop(self):
+        self.dataflow.stop()
 
     def __del__(self):
         for th in self.threads:

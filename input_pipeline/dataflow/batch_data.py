@@ -21,6 +21,7 @@ class BatchData(Dataflow):
         self.dataflow = dataflow
         self.batch_size = int(batch_size)
         self.remainder = remainder
+        self.is_stop = False
 
     def reset(self):
         pass
@@ -31,6 +32,8 @@ class BatchData(Dataflow):
         """
         holder = []
         for data in self.dataflow.get_data():
+            if self.is_stop is True:
+                break
             print("in bath get data %s"%data[1])
             holder.append(data)
             if len(holder) == self.batch_size:
@@ -109,6 +112,12 @@ class BatchData(Dataflow):
             """
 
         return (datas, labels)
+
+    def stop(self):
+        self.is_stop = True
+
+    def __del__(self):
+        self.is_stop = True
 
 
 
