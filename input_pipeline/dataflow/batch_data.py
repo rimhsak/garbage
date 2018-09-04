@@ -17,7 +17,7 @@ class BatchData(Dataflow):
             if False, generagtes a batch to have data as same as batch_size
             if True, is able to generate a batch to have less data than batch_size
         """
-        super(Dataflow, self).__init__()
+        super(BatchData, self).__init__(dataflow)
         self.dataflow = dataflow
         self.batch_size = int(batch_size)
         self.remainder = remainder
@@ -118,6 +118,7 @@ class BatchData(Dataflow):
 
     def __del__(self):
         self.is_stop = True
+    
 
 
 

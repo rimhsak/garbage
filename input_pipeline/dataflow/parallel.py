@@ -30,11 +30,10 @@ class MultiThreadPrefetchData(Dataflow):
                     if self.is_stop():
                         break
                     data= self.dataflow.get_data()
-                    #print('inside _Worker')
-                    #print(data[0])
+                    print('inside _Worker: ' + str(data[0]))
                     self.queue_put_stoppable(self.queue, data)
             except Exception as e:
-                #print(e)
+                print(e)
                 if self.is_stop():
                     pass
                 else:
