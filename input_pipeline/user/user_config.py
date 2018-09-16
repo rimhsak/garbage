@@ -12,4 +12,3 @@ class UserConfig:
         self.train_data_expdir = "/home/rimhsak/garbage/libri/trainfbank"
         self.train_text_data_expdir = "/home/rimhsak/garbage/libri/traintext"
 
-

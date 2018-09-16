@@ -9,6 +9,8 @@ from dataflow.batch_data import BatchData
 
 import tensorflow as tf
 
+from tensorpack.dataflow import *
+
 if __name__ == '__main__':
     print("Start!!")
 
@@ -20,8 +22,8 @@ if __name__ == '__main__':
     dataflow.reset()
 
     dataflow = BatchData(dataflow, config.batch_size)
-    dataflow = BatchPrefetchData(dataflow, 10, 1)
-    dataflow.reset()
+    #dataflow = BatchPrefetchData(dataflow, 10, 1)
+    #dataflow.reset()
     time.sleep(1)
     
     lcount = 0
