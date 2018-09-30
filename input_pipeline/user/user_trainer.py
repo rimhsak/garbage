@@ -73,7 +73,7 @@ class UserTrainer:
             self._lookup[self._alphabet[i]] = i
 
         print(self._lookup)
-        print(len(open(datafile).readlines()))
+        #print(len(open(datafile).readlines()))
         return self._dataflow
 
     def GetData(self):
@@ -201,16 +201,29 @@ if __name__ == '__main__':
     userTrainer = UserTrainer(userConfig, 'train')
     
     ds = MyDataFlow(userTrainer)
-    ds = MyBatchData(ds, 64)
-    ds = PrefetchData(ds, 1000, 4)
-    send_dataflow_zmq(ds, 'tcp://127.0.0.1:8888')
+    #ds = PrefetchData(ds, 128, 2)
+    ds = MyBatchData(ds, 32)
+    #ds = PrefetchData(ds, 8, 1)
 
+    send_dataflow_zmq(ds, 'tcp://127.0.0.1:8888')
     #print(next(ds.get_data()))
      
-#    count = 0
-#    while True:
-#        userTrainer.GetData()
-#        if count == 10:
-#            break
-#        count += 1
-#    print("end")
+    import tensorflow as tf
+
+    with tf.Session() as sess:
+        count = 0
+        while True:
+            print("*"*50 + " " + str(count))
+            data = next(ds.get_data())
+            
+            inputs = tf.convert_to_tensor(data[0], dtype=np.float32)
+            inputs_length= tf.convert_to_tensor(data[1], dtype=np.int32)
+            targets= tf.convert_to_tensor(data[2], dtype=np.int32)
+            targets_length= tf.convert_to_tensor(data[3], dtype=np.int32)
+            print(sess.run([inputs, inputs_length, targets, targets_length]))
+            print(inputs)
+    
+            if count == 11:
+                break
+            count += 1
+    #    print("end")
